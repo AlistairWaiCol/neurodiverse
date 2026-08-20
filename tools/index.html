@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Neurodiversity Aotearoa Tools</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #F6F7F5;
+    --surface: #FFFFFF;
+    --surface-2: #EDF0EC;
+    --ink: #1E2422;
+    --ink-soft: #565F5B;
+    --ink-faint: #7C857F;
+    --navy: #1F3864;
+    --accent: #3F7D5C;
+    --accent-strong: #2E5E44;
+    --accent-soft: #E4EFE6;
+    --border: #DDE3DB;
+    --border-strong: #C4CDC1;
+    --focus: #2E5E44;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12161A; --surface: #1A2024; --surface-2: #1F262A;
+      --ink: #ECEFEC; --ink-soft: #A9B2AC; --ink-faint: #7C877F;
+      --navy: #8FAAD6; --accent: #78B896; --accent-strong: #98CDAE; --accent-soft: #1D2B24;
+      --border: #2A3236; --border-strong: #384046; --focus: #98CDAE;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161A; --surface: #1A2024; --surface-2: #1F262A;
+    --ink: #ECEFEC; --ink-soft: #A9B2AC; --ink-faint: #7C877F;
+    --navy: #8FAAD6; --accent: #78B896; --accent-strong: #98CDAE; --accent-soft: #1D2B24;
+    --border: #2A3236; --border-strong: #384046; --focus: #98CDAE;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Public Sans", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2 { font-family: "Fraunces", Georgia, serif; color: var(--ink); margin: 0; text-wrap: balance; font-weight: 600; }
+  a { color: var(--accent-strong); }
+  a:focus-visible, button:focus-visible { outline: 2.5px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+
+  .eyebrow {
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--accent-strong);
+  }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 48px 24px 0; }
+
+  .page-head { max-width: 640px; margin-bottom: 34px; }
+  .page-head .eyebrow { display: block; margin-bottom: 10px; }
+  .page-head h1 { font-size: clamp(26px, 4vw, 34px); }
+  .page-head p { margin-top: 12px; color: var(--ink-soft); font-size: 15.5px; }
+
+  .tool-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  @media (max-width: 720px) { .tool-grid { grid-template-columns: 1fr; } }
+
+  .tool-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 26px 26px 24px; display: flex; flex-direction: column; gap: 14px;
+  }
+  .tool-icon {
+    width: 42px; height: 42px; border-radius: 11px;
+    background: var(--accent-soft); color: var(--accent-strong);
+    display: flex; align-items: center; justify-content: center; font-size: 19px; flex: none;
+  }
+  .tool-card h2 { font-size: 19px; font-weight: 600; }
+  .tool-card p.desc { margin: 0; color: var(--ink-soft); font-size: 14.5px; flex: 1; }
+  .tool-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tool-tag {
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0.03em; color: var(--ink-faint);
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: "Public Sans", sans-serif; font-size: 14.5px; font-weight: 600;
+    text-decoration: none; padding: 11px 20px; border-radius: 10px;
+    border: 1.5px solid transparent; cursor: pointer; align-self: flex-start; margin-top: 4px;
+  }
+  .btn-primary { background: var(--accent-strong); color: #FFFFFF; }
+  .btn-primary:hover { background: var(--accent); }
+
+  .more-note {
+    margin-top: 22px; padding: 16px 20px; border: 1px dashed var(--border-strong);
+    border-radius: 14px; font-size: 14px; color: var(--ink-faint);
+  }
+
+  footer { margin-top: 48px; border-top: 1px solid var(--border); }
+  .footer-inner { max-width: 1080px; margin: 0 auto; padding: 24px 24px 40px; }
+  .footer-inner p { margin: 0; font-size: 13px; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+
+
+<main>
+  <div class="page-head">
+    <span class="eyebrow">Neurodiversity Aotearoa</span>
+    <h1>Tools</h1>
+    <p>Free, browser-based assessments and check-ins for use with neurodivergent students. Each tool opens on its own, runs entirely in the browser, and keeps results on-device until you choose to save or print them.</p>
+  </div>
+
+  <div class="tool-grid">
+    <article class="tool-card">
+      <div class="tool-icon">📝</div>
+      <h2>Schonell Spelling Test</h2>
+      <p class="desc">Reads each graded word aloud — and in a sentence — while the student types their answer. Auto-marks responses, stops after five wrong in a row, and converts the score to a spelling age.</p>
+      <div class="tool-meta">
+        <span class="tool-tag">Text-to-speech</span>
+        <span class="tool-tag">Auto-scored</span>
+        <span class="tool-tag">Printable</span>
+      </div>
+      <a class="btn btn-primary" href="spelling-test.html" target="_blank" rel="noopener">Open tool ↗</a>
+    </article>
+
+    <article class="tool-card">
+      <div class="tool-icon">🎡</div>
+      <h2>Check-in Wheels</h2>
+      <p class="desc">Two self check-in wheels — Executive Function and ASD — that let a student rate how true each statement feels for them, then visualise the result as a wheel they can save or print.</p>
+      <div class="tool-meta">
+        <span class="tool-tag">EF Wheel</span>
+        <span class="tool-tag">ASD Wheel</span>
+        <span class="tool-tag">Downloadable</span>
+      </div>
+      <a class="btn btn-primary" href="checkin-wheels.html" target="_blank" rel="noopener">Open tool ↗</a>
+    </article>
+  </div>
+
+  <p class="more-note">More tools will be added here over time.</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>Neurodiversity Aotearoa · Wairarapa, Aotearoa New Zealand · Questions — contact Alistair Morrison, Wairarapa College.</p>
+  </div>
+</footer>
+
+</body>
+</html>

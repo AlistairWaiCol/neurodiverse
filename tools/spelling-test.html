@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schonell Spelling Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #F6F7F5;
+    --surface: #FFFFFF;
+    --surface-2: #EDF0EC;
+    --ink: #1E2422;
+    --ink-soft: #565F5B;
+    --ink-faint: #7C857F;
+    --navy: #1F3864;
+    --navy-strong: #142748;
+    --accent: #3F7D5C;
+    --accent-strong: #2E5E44;
+    --accent-soft: #E4EFE6;
+    --border: #DDE3DB;
+    --border-strong: #C4CDC1;
+    --on-strong: #FFFFFF;
+    --red: #922B21;
+    --red-soft: #FBE7E4;
+    --green: #2E5E44;
+    --green-soft: #E4EFE6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12161A; --surface: #1A2024; --surface-2: #1F262A;
+      --ink: #ECEFEC; --ink-soft: #A9B2AC; --ink-faint: #7C877F;
+      --navy: #8FAAD6; --navy-strong: #B4C7E5;
+      --accent: #78B896; --accent-strong: #98CDAE; --accent-soft: #1D2B24;
+      --border: #2A3236; --border-strong: #384046; --on-strong: #10151A;
+      --red: #E28A80; --red-soft: #3A2321; --green: #98CDAE; --green-soft: #1D2B24;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161A; --surface: #1A2024; --surface-2: #1F262A;
+    --ink: #ECEFEC; --ink-soft: #A9B2AC; --ink-faint: #7C877F;
+    --navy: #8FAAD6; --navy-strong: #B4C7E5;
+    --accent: #78B896; --accent-strong: #98CDAE; --accent-soft: #1D2B24;
+    --border: #2A3236; --border-strong: #384046; --on-strong: #10151A;
+    --red: #E28A80; --red-soft: #3A2321; --green: #98CDAE; --green-soft: #1D2B24;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: "Public Sans", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); margin: 0; padding: 24px; color: var(--ink); }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1 { font-family: "Fraunces", Georgia, serif; font-weight: 600; color: var(--navy); font-size: 25px; margin: 0 0 4px; }
+  .subtitle { color: var(--ink-soft); font-size: 13.5px; margin: 0 0 16px; line-height: 1.5; }
+  .toggle-row { display: flex; gap: 8px; margin-bottom: 18px; }
+  .toggle-btn { background: var(--surface); color: var(--navy); border: 1.5px solid var(--navy); padding: 9px 20px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .toggle-btn.active { background: var(--navy-strong); color: var(--on-strong); border-color: var(--navy-strong); }
+  .toggle-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .card h2 { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 16px; color: var(--navy); margin: 0 0 12px; }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-soft); margin: 10px 0 4px; }
+  input[type=text], input[type=date], select { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box; background: var(--surface); color: var(--ink); }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 16px; }
+  .meta-row > div { flex: 1; min-width: 180px; }
+  button { font-family: "Public Sans", sans-serif; background: var(--navy-strong); color: var(--on-strong); border: none; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  button.secondary { background: var(--surface); color: var(--navy); border: 1.5px solid var(--navy); }
+  button.audio { background: var(--accent-soft); color: var(--accent-strong); border: 1px solid var(--border); }
+  button:hover { opacity: 0.9; }
+  button:disabled { opacity: 0.45; cursor: not-allowed; }
+  .word-number { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+  .audio-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  .answer-row { display: flex; gap: 10px; margin-bottom: 6px; }
+  .answer-row input { flex: 1; font-size: 17px; padding: 10px 12px; }
+  .action-row { display: flex; gap: 10px; margin-top: 8px; }
+  .streak { font-size: 13px; color: var(--ink-soft); margin-top: 12px; }
+  .streak strong { color: var(--red); }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13.5px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--navy); }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: 700; }
+  .tag.correct { background: var(--green-soft); color: var(--green); }
+  .tag.incorrect { background: var(--red-soft); color: var(--red); }
+  .tag.skipped { background: var(--surface-2); color: var(--ink-faint); }
+  .summary { font-size: 14px; margin-bottom: 6px; }
+  .age-result { font-family: "Fraunces", Georgia, serif; font-size: 21px; font-weight: 600; color: var(--navy); margin: 6px 0 4px; }
+  .age-working { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 10px; }
+  .footer-note { font-size: 12px; color: var(--ink-faint); text-align: center; margin-top: 8px; }
+  .set-note { font-size: 12px; color: var(--ink-faint); margin: -10px 0 16px; }
+  @media print {
+    body { background: white; color: #1F1F1F; padding: 0; }
+    .no-print { display: none !important; }
+    .card { box-shadow: none; border: 1px solid #D6D6D6; background: white; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1>Schonell Graded Word Spelling Test</h1>
+  <p class="subtitle no-print">Reads each word aloud (and in a sentence), student types their answer, auto-marks exact matches, stops after 5 wrong in a row, and converts the score to a spelling age. Nothing is sent anywhere — download or print the results when you're done.</p>
+
+  <div class="toggle-row no-print" id="toggleRow">
+    <button class="toggle-btn active" data-set="A">Set A</button>
+    <button class="toggle-btn" data-set="B">Set B</button>
+  </div>
+  <p class="set-note no-print" id="setDefaultNote"></p>
+
+  <div class="card">
+    <div class="meta-row">
+      <div><label>Student name</label><input type="text" id="studentName" placeholder="e.g. Alex Smith"></div>
+      <div><label>Date</label><input type="date" id="testDate"></div>
+      <div><label>Completed with (staff)</label><input type="text" id="staffName" placeholder="e.g. Mr Morrison"></div>
+    </div>
+    <div class="no-print">
+      <label style="margin-top:14px;">Voice</label>
+      <select id="voiceSelect"></select>
+    </div>
+  </div>
+
+  <div class="card no-print" id="testCard">
+    <div class="word-number" id="wordNumber">Word 1 of —</div>
+    <div class="audio-row">
+      <button class="audio" id="sayWord">🔊 Say the word</button>
+      <button class="audio" id="sayCarrier">🔊 Word in a sentence</button>
+    </div>
+    <div class="answer-row">
+      <input type="text" id="answerInput" placeholder="Type the word here" autocomplete="off">
+    </div>
+    <div class="action-row">
+      <button id="submitBtn">Submit</button>
+      <button id="skipBtn" class="secondary">Skip</button>
+    </div>
+    <p class="streak" id="streakNote">Consecutive wrong: 0 / 5</p>
+  </div>
+
+  <div class="card" id="resultsCard" style="display:none;">
+    <h2>Results</h2>
+    <p class="summary" id="summaryText"></p>
+    <div class="age-result" id="ageResult"></div>
+    <div class="age-working" id="ageWorking"></div>
+    <table id="resultsTable">
+      <thead><tr><th>#</th><th>Word</th><th>Response</th><th>Result</th></tr></thead>
+      <tbody id="resultsBody"></tbody>
+    </table>
+    <div class="action-row no-print" style="margin-top:14px;">
+      <button id="printBtn">🖨 Print / Save as PDF</button>
+      <button id="downloadCsv" class="secondary">Download results (CSV)</button>
+      <button id="restartBtn" class="secondary">Start over</button>
+    </div>
+  </div>
+
+  <p class="footer-note no-print">Auto-marking is an exact (case-insensitive) match — review any borderline cases yourself in the results table. Spelling age uses Schonell's own conversion: score ÷ 10, + 5, then tenths converted to months via their table (not a straight ×12).</p>
+</div>
+
+<script>
+/* ============================================================
+   Schonell Graded Word Spelling Test — Set A and Set B, words
+   and carrier sentences, transcribed from the licensed PDF you
+   supplied and visually checked against the source grid.
+   ============================================================ */
+const SET_A_RAW = [
+  ["net","The fisherman threw his net into the water to catch fish."],
+  ["can","I can help you with your homework if you need it."],
+  ["fun","The children had a lot of fun at the park yesterday."],
+  ["top","The cat climbed to the top of the tree."],
+  ["rag","She used a rag to clean up the spill on the floor."],
+  ["sat","He sat down on the bench to rest."],
+  ["hit","She hit the baseball out of the park."],
+  ["lid","Make sure to put the lid on the jar so it stays fresh."],
+  ["cap","He wore a cap to protect his head from the sun."],
+  ["had","They had a delicious dinner last night."],
+  ["let","Please let me know if you need any help."],
+  ["doll","The little girl played with her favorite doll all afternoon."],
+  ["bell","The school bell rings at 3 o'clock."],
+  ["yes","She answered yes when asked if she wanted to go to the zoo."],
+  ["then","Finish your homework first, and then you can play."],
+  ["may","May I borrow a pencil, please?"],
+  ["tree","The tree in the backyard is very tall."],
+  ["by","She walked by the bakery on her way to school."],
+  ["ill","He stayed home because he was feeling ill."],
+  ["egg","She cracked an egg into the bowl for the recipe."],
+  ["land","The airplane will land at 5 p.m."],
+  ["how","How do you solve this math problem?"],
+  ["your","Please put your books on the shelf."],
+  ["cold","It was so cold outside that we needed our coats."],
+  ["talk","We need to talk about your grades after class."],
+  ["flower","She picked a beautiful flower from the garden."],
+  ["son","Her son is in the first grade."],
+  ["seem","Things seem to be getting better now."],
+  ["four","She has four apples in her basket."],
+  ["loud","The music was so loud we couldn't hear each other."],
+  ["ground","The ball rolled on the ground before stopping."],
+  ["lowest","She scored the lowest in the class on the test."],
+  ["brain","The puzzle is designed to challenge your brain."],
+  ["write","Please write your name at the top of the page."],
+  ["amount","She was surprised by the amount of homework."],
+  ["noise","There was a strange noise coming from the attic."],
+  ["remain","Please remain seated until the bell rings."],
+  ["hoped","She hoped to finish her project by Friday."],
+  ["worry","Don't worry; everything will be okay."],
+  ["dancing","They enjoyed dancing at the party last night."],
+  ["damage","The storm caused a lot of damage to the roof."],
+  ["else","Is there anything else you need?"],
+  ["through","He walked through the door quietly."],
+  ["entered","She entered the room and greeted everyone."],
+  ["cough","His cough was loud and persistent."],
+  ["fitted","The new shoes fitted perfectly."],
+  ["spare","Do you have a spare pen I can borrow?"],
+  ["daughter","Her daughter loves to read books."],
+  ["edge","She stood at the edge of the cliff and looked down."],
+  ["search","We will search for your lost keys together."],
+  ["concert","The band played a fantastic concert last night."],
+  ["domestic","She enjoys reading about domestic animals like cats and dogs."],
+  ["topic","The topic of today's discussion is climate change."],
+  ["method","She used a different method to solve the math problem."],
+  ["freeze","Remember to freeze the leftovers for later."],
+  ["avoid","Please avoid walking on the wet floor."],
+  ["duties","His daily duties include feeding the pets and taking out the trash."],
+  ["recent","In recent news, the park has been renovated."],
+  ["type","What type of music do you like?"],
+  ["instance","In this instance, we need to follow the rules."],
+  ["liquid","Water is a liquid that is essential for life."],
+  ["assist","The teacher asked him to assist with handing out papers."],
+  ["readily","She readily agreed to help with the project."],
+  ["guess","Can you guess the answer to this riddle?"],
+  ["attendance","The student's attendance at school is very good."],
+  ["description","Please provide a detailed description of the missing item."],
+  ["welfare","The organization's goal is to improve the welfare of children."],
+  ["various","The store sells various types of fruit."],
+  ["genuine","She gave a genuine smile when she saw her friend."],
+  ["interfere","Please don't interfere with their conversation."],
+  ["accordance","The project was completed in accordance with the guidelines."],
+  ["mechanical","The car had a mechanical issue that needed repair."],
+  ["anxious","She felt anxious before her big test."],
+  ["signature","Please sign your signature at the bottom of the form."],
+  ["allotment","Each student receives an allotment of materials for the project."],
+  ["approval","She waited for her teacher's approval before starting the experiment."],
+  ["accomplished","He accomplished all his goals for the year."],
+  ["remittance","The remittance for the bill was sent yesterday."],
+  ["financial","They needed financial advice to manage their savings."],
+  ["capacity","The auditorium has a capacity of 500 people."],
+  ["surplus","The farm had a surplus of vegetables this season."],
+  ["exceptionally","She performed exceptionally well in the competition."],
+  ["successful","The event was very successful and raised a lot of money."],
+  ["preliminary","We need to complete the preliminary steps before moving forward."],
+  ["resource","The library is a great resource for research."],
+  ["prologue","The book starts with an intriguing prologue."],
+  ["colonel","The colonel led his troops with great skill."],
+  ["coarse","The fabric felt coarse to the touch."],
+  ["referring","She was referring to the book we read last week."],
+  ["courteous","He was very courteous when he opened the door for others."],
+  ["exhibition","The art exhibition showcased many beautiful paintings."],
+  ["affectionately","She affectionately hugged her grandmother."],
+  ["attorney","They hired an attorney to help with their legal issues."],
+  ["pinnacle","Reaching the summit was the pinnacle of their journey."],
+  ["toboggan","The children went down the hill on a toboggan."],
+  ["definite","We have a definite plan for the weekend."],
+  ["guarantee","The product comes with a one-year guarantee."],
+  ["anniversary","They celebrated their tenth wedding anniversary last week."],
+  ["irresistible","The smell of fresh cookies was irresistible."],
+  ["hydraulic","The machine uses a hydraulic system to operate."],
+];
+
+const SET_B_RAW = [
+  ["see","Can you see the bird in the tree?"],
+  ["cut","Please cut the paper along the dotted line."],
+  ["mat","Wipe your feet on the mat before coming inside."],
+  ["in","She put the books in her backpack."],
+  ["ran","He ran as fast as he could to catch the bus."],
+  ["bag","She packed her lunch in a brown bag."],
+  ["ten","There are ten apples in the basket."],
+  ["hat","He wore a warm hat to keep his head warm."],
+  ["dad","Her dad taught her how to ride a bike."],
+  ["bed","She made her bed neatly every morning."],
+  ["leg","He broke his leg while playing soccer."],
+  ["dot","Please put a dot on your paper next to the correct answer."],
+  ["pen","She wrote her name with a blue pen."],
+  ["yet","He hasn't finished his homework yet."],
+  ["hay","The horses were eating hay in the barn."],
+  ["good","She got a good grade on her test."],
+  ["till","We can't leave till the bell rings."],
+  ["be","Be careful when crossing the street."],
+  ["with","She went to the store with her mother."],
+  ["from","He received a letter from his friend."],
+  ["time","What time is it?"],
+  ["all","All the students were excited for the field trip."],
+  ["help","She asked her teacher for help with the problem."],
+  ["week","They plan to go on vacation next week."],
+  ["pie","She baked a delicious apple pie for dessert."],
+  ["boat","They sailed the boat across the lake."],
+  ["mind","She always tries to keep an open mind."],
+  ["sooner","The sooner we finish, the sooner we can play."],
+  ["year","She will be in third grade next year."],
+  ["dream","He had a strange dream last night."],
+  ["sight","The sunset was a beautiful sight."],
+  ["mouth","Open your mouth wide at the dentist."],
+  ["large","The elephant is a very large animal."],
+  ["might","We might go to the park if it stops raining."],
+  ["brought","She brought her favorite book to class."],
+  ["mistake","He made a mistake on his homework and had to fix it."],
+  ["pair","She bought a new pair of shoes for school."],
+  ["while","Read a book while you wait for your turn."],
+  ["skate","They love to skate on the ice rink."],
+  ["stayed","He stayed home because he wasn't feeling well."],
+  ["yoke","The farmer used a yoke to hitch the oxen to the plow."],
+  ["island","They went on vacation to a tropical island."],
+  ["nerve","It takes a lot of nerve to speak in front of a crowd."],
+  ["join","Would you like to join us for lunch?"],
+  ["fare","She paid the bus fare with exact change."],
+  ["iron","He needs to iron his shirt for the meeting."],
+  ["health","Regular exercise is important for good health."],
+  ["direct","The teacher gave direct instructions to the class."],
+  ["calm","She tried to stay calm during the storm."],
+  ["headache","She took some medicine to relieve her headache."],
+  ["final","The final exam is next week, so be sure to study."],
+  ["circus","They went to the circus and saw amazing acrobats."],
+  ["increase","We need to increase the temperature to cook the food properly."],
+  ["slippery","Be careful on the slippery floor."],
+  ["lodge","They stayed at a cozy lodge in the mountains."],
+  ["style","She liked the new style of her haircut."],
+  ["bargain","She found a great bargain at the store."],
+  ["copies","We made several copies of the document for the meeting."],
+  ["guest","Our guest arrived just in time for dinner."],
+  ["policy","The school has a strict policy on bullying."],
+  ["view","The hotel room had a beautiful view of the ocean."],
+  ["library","She borrowed three books from the library."],
+  ["cushion","She added a soft cushion to her chair for comfort."],
+  ["safety","They wear helmets for safety while riding bikes."],
+  ["patient","The doctor was very kind to the patient."],
+  ["account","She opened a savings account at the bank."],
+  ["earliest","The earliest she can arrive is at 9 a.m."],
+  ["institution","The university is a respected institution of learning."],
+  ["similar","These two books are very similar in content."],
+  ["generous","He is always generous with his time and money."],
+  ["orchestra","The orchestra played beautifully at the concert."],
+  ["equally","The cake was divided equally among the children."],
+  ["individual","Each individual has unique talents and skills."],
+  ["merely","He was merely asking for directions, not being rude."],
+  ["enthusiastic","She is very enthusiastic about joining the new club."],
+  ["appreciate","I really appreciate your help with this project."],
+  ["familiar","The song sounded very familiar to her."],
+  ["source","The library is a great source of information."],
+  ["immediate","She made an immediate decision to help."],
+  ["breathe","Remember to breathe deeply and stay calm."],
+  ["permanent","They decided to make a permanent change to the schedule."],
+  ["sufficient","Make sure you have sufficient time to complete the task."],
+  ["broach","He decided to broach the topic at the next meeting."],
+  ["customary","It's customary to shake hands when meeting someone new."],
+  ["especially","She loves all animals, especially dogs."],
+  ["materially","They were materially affected by the new tax laws."],
+  ["cemetery","They visited the cemetery to pay their respects."],
+  ["leisure","In her leisure time, she enjoys reading and painting."],
+  ["accredited","The course is offered by an accredited institution."],
+  ["fraternally","The two brothers were fraternally close."],
+  ["subterranean","The subterranean caves were explored by the adventurers."],
+  ["apparatus","The scientist used a special apparatus to conduct the experiment."],
+  ["portmanteau","The word \"brunch\" is a portmanteau of \"breakfast\" and \"lunch.\""],
+  ["politician","The politician gave a speech about the new policy."],
+  ["miscellaneous","She found miscellaneous items at the back of the drawer."],
+  ["mortgage","They applied for a mortgage to buy their new home."],
+  ["equipped","The gym is fully equipped with the latest exercise machines."],
+  ["exaggerate","He tends to exaggerate when telling stories."],
+  ["amateur","She is an amateur photographer who loves taking pictures."],
+  ["committee","The committee will meet to discuss the new project."],
+];
+
+function buildList(raw) {
+  return raw.map((pair, i) => ({ number: i + 1, word: pair[0], sentence: pair[1], accepted: [pair[0]] }));
+}
+const SETS = { A: buildList(SET_A_RAW), B: buildList(SET_B_RAW) };
+
+// Schonell's own conversion: score/10, +5 = raw years.tenths; tenths -> months via this table (not a straight x12)
+const MONTHS_TABLE = { 0: 0, 1: 1, 2: 2, 3: 4, 4: 5, 5: 6, 6: 7, 7: 8, 8: 10, 9: 11 };
+function spellingAge(correctCount) {
+  const raw = correctCount / 10 + 5;
+  const years = Math.floor(raw + 1e-9);
+  const tenths = Math.round((raw - years) * 10);
+  const months = MONTHS_TABLE[tenths] ?? 0;
+  return { years, months, rawLabel: raw.toFixed(1) };
+}
+
+// School guidance: Set A Jan-Jun, Set B Jul-Dec — used as a default, not a lock, since
+// staff may occasionally have a legitimate reason to use the other set out of season.
+function defaultSetForToday() {
+  const month = new Date().getMonth() + 1; // 1-12
+  return month <= 6 ? "A" : "B";
+}
+let currentSetKey = defaultSetForToday();
+let WORD_LIST = SETS[currentSetKey];
+
+const synth = window.speechSynthesis;
+let voices = [];
+let current = 0;
+let wrongStreak = 0;
+let stopped = false;
+let results = []; // { number, word, response, status }
+
+function populateVoices() {
+  voices = synth.getVoices();
+  const select = document.getElementById("voiceSelect");
+  select.innerHTML = "";
+  if (!voices.length) return;
+  const sorted = [...voices].sort((a, b) => {
+    const aEn = a.lang.toLowerCase().startsWith("en") ? 0 : 1;
+    const bEn = b.lang.toLowerCase().startsWith("en") ? 0 : 1;
+    if (aEn !== bEn) return aEn - bEn;
+    return a.name.localeCompare(b.name);
+  });
+  sorted.forEach((v) => {
+    const opt = document.createElement("option");
+    opt.value = voices.indexOf(v);
+    opt.textContent = `${v.name} (${v.lang})${v.default ? " — default" : ""}`;
+    select.appendChild(opt);
+  });
+  const enNZ = voices.findIndex(v => v.lang.toLowerCase() === "en-nz");
+  const enAU = voices.findIndex(v => v.lang.toLowerCase() === "en-au");
+  const enGB = voices.findIndex(v => v.lang.toLowerCase() === "en-gb");
+  const preferred = enNZ >= 0 ? enNZ : (enAU >= 0 ? enAU : (enGB >= 0 ? enGB : -1));
+  if (preferred >= 0) select.value = String(preferred);
+}
+synth.onvoiceschanged = populateVoices;
+populateVoices();
+
+function speak(text) {
+  synth.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  const voiceIdx = parseInt(document.getElementById("voiceSelect").value, 10);
+  if (!isNaN(voiceIdx) && voices[voiceIdx]) utter.voice = voices[voiceIdx];
+  synth.speak(utter);
+}
+
+document.getElementById("sayWord").addEventListener("click", () => {
+  if (WORD_LIST[current]) speak(WORD_LIST[current].word);
+});
+document.getElementById("sayCarrier").addEventListener("click", () => {
+  if (WORD_LIST[current]) speak(WORD_LIST[current].sentence);
+});
+
+function renderCurrent() {
+  const total = WORD_LIST.length;
+  document.getElementById("wordNumber").textContent = `Set ${currentSetKey} — Word ${current + 1} of ${total}`;
+  document.getElementById("answerInput").value = "";
+  document.getElementById("answerInput").focus();
+  document.getElementById("streakNote").innerHTML = `Consecutive wrong: <strong>${wrongStreak}</strong> / 5`;
+}
+
+function recordResult(response, status) {
+  const item = WORD_LIST[current];
+  results.push({ number: item.number, word: item.word, response, status });
+  if (results.length === 1) lockToggle();
+  if (status === "correct") {
+    wrongStreak = 0;
+  } else {
+    wrongStreak += 1;
+  }
+  if (wrongStreak >= 5) {
+    finishTest(true);
+    return;
+  }
+  current += 1;
+  if (current >= WORD_LIST.length) {
+    finishTest(false);
+    return;
+  }
+  renderCurrent();
+}
+
+document.getElementById("submitBtn").addEventListener("click", () => {
+  if (stopped) return;
+  const raw = document.getElementById("answerInput").value.trim();
+  const item = WORD_LIST[current];
+  const isCorrect = item.accepted.some(a => a.trim().toLowerCase() === raw.toLowerCase()) && raw.length > 0;
+  recordResult(raw, isCorrect ? "correct" : "incorrect");
+});
+
+document.getElementById("answerInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") document.getElementById("submitBtn").click();
+});
+
+document.getElementById("skipBtn").addEventListener("click", () => {
+  if (stopped) return;
+  recordResult("(skipped)", "skipped");
+});
+
+function finishTest(stoppedEarly) {
+  stopped = true;
+  document.getElementById("testCard").style.display = "none";
+  document.getElementById("resultsCard").style.display = "block";
+
+  const correctCount = results.filter(r => r.status === "correct").length;
+  const incorrectCount = results.filter(r => r.status === "incorrect").length;
+  const skippedCount = results.filter(r => r.status === "skipped").length;
+
+  document.getElementById("summaryText").innerHTML =
+    `Set ${currentSetKey}. ` +
+    (stoppedEarly ? `Stopped after 5 wrong in a row, at word ${results.length} of ${WORD_LIST.length}. ` : `Reached the end of the list. `) +
+    `Correct: <strong>${correctCount}</strong> · Incorrect: <strong>${incorrectCount}</strong> · Skipped: <strong>${skippedCount}</strong>.`;
+
+  const age = spellingAge(correctCount);
+  document.getElementById("ageResult").textContent = `Spelling age: ${age.years} years, ${age.months} months`;
+  document.getElementById("ageWorking").textContent =
+    `Working: ${correctCount} correct ÷ 10 = ${(correctCount / 10).toFixed(1)}, + 5 = ${age.rawLabel} → ${age.years} years + (.${age.rawLabel.split(".")[1]} = ${age.months} months per Schonell's table).`;
+
+  const body = document.getElementById("resultsBody");
+  body.innerHTML = "";
+  results.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${r.number}</td><td>${r.word}</td><td>${r.response || ""}</td><td><span class="tag ${r.status}">${r.status}</span></td>`;
+    body.appendChild(tr);
+  });
+}
+
+// ---------- file saving (plain browser download) ----------
+function guessMime(filename) {
+  if (filename.endsWith(".csv")) return "text/csv";
+  if (filename.endsWith(".png")) return "image/png";
+  return "application/octet-stream";
+}
+function saveFile(filename, data) {
+  const blob = (data instanceof Blob) ? data : new Blob([data], { type: guessMime(filename) });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById("downloadCsv").addEventListener("click", () => {
+  const name = document.getElementById("studentName").value || "Unnamed";
+  const date = document.getElementById("testDate").value || "";
+  const staff = document.getElementById("staffName").value || "";
+  const correctCount = results.filter(r => r.status === "correct").length;
+  const age = spellingAge(correctCount);
+  let csv = `Student,${name}\nDate,${date}\nCompleted with,${staff}\nSet,${currentSetKey}\nScore,${correctCount}\nSpelling age,${age.years} years ${age.months} months\n\nWord #,Word,Response,Result\n`;
+  results.forEach(r => { csv += `${r.number},"${r.word}","${r.response}",${r.status}\n`; });
+  saveFile(`Schonell_Set${currentSetKey}_${name.replace(/\s+/g, "_")}_${date}.csv`, csv);
+});
+
+function lockToggle() {
+  document.querySelectorAll(".toggle-btn").forEach(b => { b.disabled = true; });
+  document.getElementById("setDefaultNote").textContent =
+    `Set ${currentSetKey} — locked in for this test. Use "Start over" to change it.`;
+}
+
+function unlockToggle() {
+  document.querySelectorAll(".toggle-btn").forEach(b => { b.disabled = false; });
+  document.getElementById("setDefaultNote").textContent =
+    `Defaulted to Set ${currentSetKey} based on today's date (Set A Jan–Jun, Set B Jul–Dec, per school guidance) — switch above if you need the other set.`;
+}
+
+function resetProgress() {
+  current = 0;
+  wrongStreak = 0;
+  stopped = false;
+  results = [];
+  document.getElementById("resultsCard").style.display = "none";
+  document.getElementById("testCard").style.display = "block";
+  unlockToggle();
+  renderCurrent();
+}
+
+document.getElementById("restartBtn").addEventListener("click", resetProgress);
+
+document.getElementById("toggleRow").addEventListener("click", (e) => {
+  const btn = e.target.closest(".toggle-btn");
+  if (!btn || btn.disabled) return;
+  currentSetKey = btn.dataset.set;
+  WORD_LIST = SETS[currentSetKey];
+  document.querySelectorAll(".toggle-btn").forEach(b => b.classList.toggle("active", b.dataset.set === currentSetKey));
+  resetProgress();
+});
+
+document.getElementById("printBtn").addEventListener("click", () => {
+  window.print();
+});
+
+// reflect the date-based default in the toggle buttons and note
+document.querySelectorAll(".toggle-btn").forEach(b => b.classList.toggle("active", b.dataset.set === currentSetKey));
+document.getElementById("setDefaultNote").textContent =
+  `Defaulted to Set ${currentSetKey} based on today's date (Set A Jan–Jun, Set B Jul–Dec, per school guidance) — switch above if you need the other set.`;
+
+document.getElementById("testDate").valueAsDate = new Date();
+renderCurrent();
+</script>
+
+</body>
+</html>
