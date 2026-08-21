@@ -2,50 +2,577 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Neurodiversity Aotearoa — ADHD & Neurodiversity Support in Masterton & Wairarapa</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neurodiversity Aotearoa</title>
+<meta name="description" content="Practical ADHD and neurodiversity tools, workshops, and resources for teachers, parents, and whānau in Masterton and the wider Wairarapa, New Zealand.">
+<link rel="canonical" href="https://neurodiverse.nz/">
+<meta property="og:title" content="Neurodiversity Aotearoa">
+<meta property="og:description" content="Practical ADHD and neurodiversity tools, workshops, and resources for teachers, parents, and whānau in Masterton and the wider Wairarapa.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://neurodiverse.nz/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Neurodiversity Aotearoa",
+  "url": "https://neurodiverse.nz/",
+  "description": "Practical ADHD and neurodiversity support — tools, workshops, and resources for teachers, parents, and the wider community.",
+  "areaServed": [
+    { "@type": "City", "name": "Masterton" },
+    { "@type": "AdministrativeArea", "name": "Wairarapa" }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap">
 <style>
   :root {
-    --bg: #F6F7F5; --surface: #FFFFFF; --ink: #1E2422; --ink-soft: #565F5B;
-    --navy: #1F3864; --accent-strong: #2E5E44; --accent-soft: #E4EFE6; --border: #DDE3DB;
+    --bg: #F6F7F5;
+    --bg-hero: #EEF2ED;
+    --surface: #FFFFFF;
+    --surface-2: #EDF0EC;
+    --ink: #1E2422;
+    --ink-soft: #565F5B;
+    --ink-faint: #7C857F;
+    --navy: #1F3864;
+    --navy-strong: #142748;
+    --accent: #3F7D5C;
+    --accent-strong: #2E5E44;
+    --accent-soft: #E4EFE6;
+    --border: #DDE3DB;
+    --border-strong: #C4CDC1;
+    --navy-soft: #E6ECF5;
+    --focus: #2E5E44;
   }
+
   @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #12161A; --surface: #1A2024; --ink: #ECEFEC; --ink-soft: #A9B2AC;
-      --navy: #8FAAD6; --accent-strong: #98CDAE; --accent-soft: #1D2B24; --border: #2A3236;
+    :root:not([data-theme="light"]) {
+      --bg: #12161A;
+      --bg-hero: #161C1F;
+      --surface: #1A2024;
+      --surface-2: #1F262A;
+      --ink: #ECEFEC;
+      --ink-soft: #A9B2AC;
+      --ink-faint: #7C877F;
+      --navy: #8FAAD6;
+      --navy-strong: #B4C7E5;
+      --accent: #78B896;
+      --accent-strong: #98CDAE;
+      --accent-soft: #1D2B24;
+      --border: #2A3236;
+      --border-strong: #384046;
+      --navy-soft: #1B2733;
+      --focus: #98CDAE;
     }
   }
+
+  :root[data-theme="dark"] {
+    --bg: #12161A;
+    --bg-hero: #161C1F;
+    --surface: #1A2024;
+    --surface-2: #1F262A;
+    --ink: #ECEFEC;
+    --ink-soft: #A9B2AC;
+    --ink-faint: #7C877F;
+    --navy: #8FAAD6;
+    --navy-strong: #B4C7E5;
+    --accent: #78B896;
+    --accent-strong: #98CDAE;
+    --accent-soft: #1D2B24;
+    --border: #2A3236;
+    --border-strong: #384046;
+    --navy-soft: #1B2733;
+    --focus: #98CDAE;
+  }
+
   * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
   body {
-    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    background: var(--bg); color: var(--ink);
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
     font-family: "Public Sans", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    padding: 24px; text-align: center;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
   }
-  .card { max-width: 480px; }
+
+  h1, h2, h3 {
+    font-family: "Fraunces", Georgia, serif;
+    color: var(--ink);
+    margin: 0;
+    text-wrap: balance;
+    font-weight: 600;
+  }
+
+  a { color: var(--accent-strong); }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2.5px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
   .eyebrow {
-    font-size: 12.5px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
-    color: var(--accent-strong); display: block; margin-bottom: 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
   }
-  h1 { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: clamp(26px, 5vw, 34px); margin: 0 0 14px; }
-  p { color: var(--ink-soft); font-size: 15.5px; line-height: 1.55; margin: 0 0 26px; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .wordmark {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 19px;
+    color: var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .wordmark .mark {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--accent);
+    flex: none;
+  }
+  .wordmark small {
+    font-family: "Public Sans", sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  nav { display: flex; gap: 4px; }
+  nav button, nav a {
+    font-family: "Public Sans", sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    background: none;
+    border: none;
+    padding: 9px 15px;
+    border-radius: 999px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+  }
+  nav button:hover, nav a:hover { color: var(--ink); background: var(--surface-2); }
+  nav button[aria-current="page"], nav a[aria-current="page"] {
+    color: var(--accent-strong);
+    background: var(--accent-soft);
+  }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-hero);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    margin-top: 28px;
+    padding: 56px 40px 44px;
+  }
+  .hero-ridge {
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    width: 100%;
+    height: auto;
+    opacity: 0.9;
+  }
+  .hero-inner { position: relative; max-width: 620px; }
+  .hero h1 {
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.16;
+    margin-top: 14px;
+  }
+  .hero p.lede {
+    margin-top: 16px;
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 54ch;
+  }
+  .hero-actions { margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; }
+
   .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: "Public Sans", sans-serif; font-size: 14.5px; font-weight: 600;
-    text-decoration: none; padding: 11px 22px; border-radius: 10px;
-    background: var(--accent-strong); color: #FFFFFF;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "Public Sans", sans-serif;
+    font-size: 14.5px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 11px 20px;
+    border-radius: 10px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
   }
-  .btn:hover { opacity: 0.9; }
+  .btn-primary { background: var(--accent-strong); color: #FFFFFF; }
+  .btn-primary:hover { background: var(--accent); }
+  .btn-ghost { background: transparent; border-color: var(--border-strong); color: var(--ink); }
+  .btn-ghost:hover { border-color: var(--accent-strong); color: var(--accent-strong); }
+
+  /* ---------- status strip ---------- */
+  .status-grid {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 640px) { .status-grid { grid-template-columns: 1fr; } }
+  .status-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+  }
+  .status-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .status-dot.live { background: var(--accent); }
+  .status-dot.next { background: var(--ink-faint); }
+  .status-label { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
+  .status-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+  .status-card p { margin: 0; font-size: 14.5px; color: var(--ink-soft); }
+
+  /* ---------- section ---------- */
+  section.block { padding: 56px 0 24px; }
+  .section-head { max-width: 640px; margin-bottom: 30px; }
+  .section-head h2 { font-size: 27px; margin-top: 8px; }
+  .section-head p { margin-top: 10px; color: var(--ink-soft); font-size: 15.5px; }
+
+  /* ---------- tool cards ---------- */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 720px) { .tool-grid { grid-template-columns: 1fr; } }
+
+  .tool-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 26px 26px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .tool-icon {
+    width: 42px; height: 42px;
+    border-radius: 11px;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px;
+    flex: none;
+  }
+  .tool-card h3 { font-size: 19px; font-weight: 600; }
+  .tool-card p.desc { margin: 0; color: var(--ink-soft); font-size: 14.5px; flex: 1; }
+  .tool-meta {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .tool-tag {
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0.03em;
+    color: var(--ink-faint);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 10px;
+  }
+  .tool-card .btn { margin-top: 4px; align-self: flex-start; }
+
+  /* ---------- event cards ---------- */
+  .event-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 720px) { .event-grid { grid-template-columns: 1fr; } }
+
+  .event-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 26px 26px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .event-tag {
+    display: inline-flex;
+    align-self: flex-start;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 11px;
+    border-radius: 999px;
+  }
+  .event-tag.teachers { background: var(--accent-soft); color: var(--accent-strong); }
+  .event-tag.parents { background: var(--navy-soft); color: var(--navy); }
+  .event-card h3 { font-size: 19px; font-weight: 600; }
+  .event-subtitle { margin: -8px 0 0; font-size: 13.5px; color: var(--ink-faint); font-style: italic; }
+  .event-card p.desc { margin: 0; color: var(--ink-soft); font-size: 14.5px; }
+  .event-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 16px;
+    margin: 4px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .event-meta div { display: flex; flex-direction: column; gap: 2px; }
+  .event-meta dt { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); }
+  .event-meta dd { margin: 0; font-size: 14px; color: var(--ink); }
+
+  /* ---------- compact event list (home preview) ---------- */
+  .event-list {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .event-list-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    padding: 18px 22px;
+  }
+  .event-list-row + .event-list-row { border-top: 1px solid var(--border); }
+  .event-row-title { font-size: 15px; font-weight: 600; color: var(--ink); flex: 1; min-width: 220px; }
+  .event-row-date { font-size: 13px; color: var(--ink-faint); flex: none; }
+
+  .more-note {
+    margin-top: 22px;
+    padding: 16px 20px;
+    border: 1px dashed var(--border-strong);
+    border-radius: 14px;
+    font-size: 14px;
+    color: var(--ink-faint);
+  }
+
+  /* ---------- footer ---------- */
+  footer {
+    margin-top: 60px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-inner {
+    max-width: 1080px; margin: 0 auto; padding: 28px 24px 40px;
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap;
+  }
+  .footer-inner p { margin: 0; font-size: 13px; color: var(--ink-faint); }
+  .footer-inner .org { font-family: "Fraunces", Georgia, serif; font-size: 15px; color: var(--ink-soft); margin-bottom: 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
 </style>
 </head>
 <body>
-  <div class="card">
-    <span class="eyebrow">Wairarapa · Aotearoa New Zealand</span>
-    <h1>Neurodiversity Aotearoa</h1>
-    <p>This site is under construction. In the meantime, the classroom tools are live and ready to use.</p>
-    <a class="btn" href="/tools/">Browse the tools ↗</a>
+<header>
+  <div class="header-inner">
+    <button class="wordmark" data-nav="home" aria-label="Neurodiversity Aotearoa, go to home">
+      <span class="mark"></span>
+      Neurodiversity Aotearoa
+    </button>
+    <nav>
+      <button data-nav="home" aria-current="page">Home</button>
+      <a href="/tools/">Tools</a>
+      <button data-nav="events">Events</button>
+    </nav>
   </div>
+</header>
+
+<main>
+
+  <section id="view-home" class="view active">
+    <div class="hero">
+      <svg class="hero-ridge" viewBox="0 0 1000 140" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,90 C 120,50 220,110 340,80 C 460,50 560,100 680,70 C 800,40 900,90 1000,60 L1000,140 L0,140 Z" fill="var(--accent-soft)" opacity="0.7"></path>
+        <path d="M0,110 C 140,80 260,130 400,100 C 540,70 660,120 800,95 C 880,82 940,100 1000,90 L1000,140 L0,140 Z" fill="var(--accent)" opacity="0.16"></path>
+      </svg>
+      <div class="hero-inner">
+        <p class="eyebrow">Masterton · Wairarapa · Aotearoa New Zealand</p>
+        <h1>Practical support for neurodivergent learners — at school, at home, and beyond.</h1>
+        <p class="lede">Neurodiversity Aotearoa brings together practical tools, workshops, and resources to help teachers, parents, and the wider community understand and support neurodivergent people — building toward a dedicated network of support across Masterton and the Wairarapa.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/tools/">Browse the tools</a>
+          <button class="btn btn-ghost" data-nav="events">See upcoming events</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="status-grid">
+      <div class="status-card">
+        <div class="status-head">
+          <span class="status-dot live"></span>
+          <span class="status-label">Available now</span>
+        </div>
+        <h3>Classroom tools</h3>
+        <p>Browser-based assessments and check-ins that staff can run with a student in minutes — nothing installed, nothing sent anywhere.</p>
+      </div>
+      <div class="status-card">
+        <div class="status-head">
+          <span class="status-dot next"></span>
+          <span class="status-label">Coming soon</span>
+        </div>
+        <h3>Wairarapa region support</h3>
+        <p>A dedicated service offering direct, in-person support for neurodivergent students and their whānau across Masterton and the wider Wairarapa.</p>
+      </div>
+    </div>
+
+    <section class="block" style="padding-bottom:0;">
+      <div class="section-head">
+        <p class="eyebrow">Upcoming Events</p>
+        <h2>Workshops and info sessions.</h2>
+        <p>Free sessions open to anyone — dates will be confirmed closer to each event.</p>
+      </div>
+
+      <div class="event-list">
+        <div class="event-list-row">
+          <span class="event-tag teachers">For Teachers</span>
+          <span class="event-row-title">Understanding and Supporting ADHD — Professional development afternoon</span>
+          <span class="event-row-date">Date: To be confirmed</span>
+        </div>
+        <div class="event-list-row">
+          <span class="event-tag parents">For Parents</span>
+          <span class="event-row-title">Understanding and Supporting ADHD — Parent evening</span>
+          <span class="event-row-date">Date: To be confirmed</span>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <button class="btn btn-primary" data-nav="events">View all events ↗</button>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-head">
+        <p class="eyebrow">Why this exists</p>
+        <h2>Small supports, used often, make the biggest difference.</h2>
+        <p>Everything here — from tools to workshops — is built for a real, practical need: quick to use, clear to understand, and respectful of the people it's for. As the Wairarapa side of this project grows, this site will grow with it.</p>
+      </div>
+    </section>
+  </section>
+
+  <section id="view-events" class="view">
+    <section class="block" style="padding-top:40px;">
+      <div class="section-head">
+        <p class="eyebrow">Upcoming Events</p>
+        <h2>Workshops and info sessions.</h2>
+        <p>Free sessions open to anyone — dates, times, and locations below will be confirmed closer to each event.</p>
+      </div>
+
+      <div class="event-grid">
+        <article class="event-card">
+          <span class="event-tag teachers">For Teachers</span>
+          <div>
+            <h3>Understanding and Supporting ADHD</h3>
+            <p class="event-subtitle">Professional development afternoon</p>
+          </div>
+          <p class="desc">This afternoon session explores ADHD through both a neuroscience and developmental lens — what it is, what causes it, and how it connects to executive function skills like memory, attention, and self-regulation. We'll unpack how these challenges show up in everyday classroom moments, and build them into a practical framework for support: lowering stress, tapping into student strengths, and teaching key skills directly.</p>
+          <p class="desc">Grounded in real classroom practice, the focus isn't on learning something entirely new — it's on recognising the tools you already have, and applying them with intention for students with ADHD. You'll leave with working examples and strategies you can put into practice straight away.</p>
+          <dl class="event-meta">
+            <div><dt>Date</dt><dd>To be confirmed</dd></div>
+            <div><dt>Time</dt><dd>To be confirmed</dd></div>
+            <div><dt>Location</dt><dd>To be confirmed</dd></div>
+            <div><dt>Cost</dt><dd>Free</dd></div>
+          </dl>
+        </article>
+
+        <article class="event-card">
+          <span class="event-tag parents">For Parents</span>
+          <div>
+            <h3>Understanding and Supporting ADHD</h3>
+            <p class="event-subtitle">Parent evening</p>
+          </div>
+          <p class="desc">This evening offers parents and caregivers a clear, practical introduction to ADHD — what it is, how it connects to key life skills, and what the diagnosis and screening process actually involves, including an honest look at what medication can and can't do.</p>
+          <p class="desc">From there, the focus shifts to home: practical strategies for lowering stress, building on your child's strengths, and teaching key skills in everyday family life. Whether you're just starting to notice signs or supporting a child with an existing diagnosis, the evening is designed to meet you where you are — and it closes with an open Q&A for whatever's on your mind.</p>
+          <dl class="event-meta">
+            <div><dt>Date</dt><dd>To be confirmed</dd></div>
+            <div><dt>Time</dt><dd>To be confirmed</dd></div>
+            <div><dt>Location</dt><dd>To be confirmed</dd></div>
+            <div><dt>Cost</dt><dd>Free</dd></div>
+          </dl>
+        </article>
+      </div>
+    </section>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="org">Neurodiversity Aotearoa</p>
+      <p>Based at Wairarapa College, Masterton</p>
+    </div>
+    <p>Questions about these tools — contact Alistair Morrison, Wairarapa College.</p>
+  </div>
+</footer>
+
+<script>
+  const views = {
+    home: document.getElementById("view-home"),
+    events: document.getElementById("view-events"),
+  };
+  const navButtons = document.querySelectorAll("[data-nav]");
+
+  function setView(name, opts) {
+    opts = opts || {};
+    if (!views[name]) name = "home";
+    Object.keys(views).forEach((key) => {
+      views[key].classList.toggle("active", key === name);
+    });
+    document.querySelectorAll("nav button[data-nav]").forEach((btn) => {
+      if (btn.dataset.nav === name) btn.setAttribute("aria-current", "page");
+      else btn.removeAttribute("aria-current");
+    });
+    if (!opts.skipHash) {
+      history.replaceState(null, "", "#" + name);
+    }
+    if (!opts.skipScroll) {
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+  }
+
+  navButtons.forEach((btn) => {
+    btn.addEventListener("click", () => setView(btn.dataset.nav));
+  });
+
+  const initial = (location.hash || "").replace("#", "");
+  setView(views[initial] ? initial : "home", { skipHash: true, skipScroll: true });
+</script>
 </body>
 </html>

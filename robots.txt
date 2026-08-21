@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://neurodiverse.nz/sitemap.xml

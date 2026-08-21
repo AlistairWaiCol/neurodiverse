@@ -4,11 +4,12 @@ Static site for [neurodiverse.nz](https://neurodiverse.nz), published with GitHu
 
 ## Structure
 
-- `index.html` — homepage placeholder (the full landing page isn't live yet)
+- `index.html` — homepage (Home + Events views, with SEO tags for Masterton/Wairarapa search)
 - `tools/index.html` — the Tools page, served at `/tools`
 - `tools/spelling-test.html` — Schonell Graded Word Spelling Test
 - `tools/checkin-wheels.html` — EF / ASD student check-in wheels
 - `CNAME` — tells GitHub Pages this repo serves the `neurodiverse.nz` custom domain
+- `sitemap.xml` / `robots.txt` — search engine discovery files
 
 ## Editing
 
