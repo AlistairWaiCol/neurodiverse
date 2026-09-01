@@ -115,6 +115,8 @@
       display: block; position: absolute; top: 0; left: 0;
       width: 100%; height: auto;
     }
+    .print-only img { display: block; width: 100%; height: auto; }
+    #printImagePage2 { page-break-before: always; }
   }
 </style>
 </head>
@@ -167,7 +169,10 @@
   <p class="footer-note">Any issues contact Alistair Morrison at Wairarapa College.</p>
 </div>
 
-<img id="printImage" class="print-only" alt="">
+<div class="print-only">
+  <img id="printImage" alt="">
+  <img id="printImagePage2" alt="">
+</div>
 
 
 <script>
@@ -519,6 +524,115 @@ function buildRecordCanvas() {
   return { canvas: out, set, name, date };
 }
 
+// ---------- word-wrap helper for canvas text ----------
+function wrapText(ctx, text, maxWidth) {
+  const words = text.split(" ");
+  const lines = [];
+  let line = "";
+  for (const word of words) {
+    const test = line ? `${line} ${word}` : word;
+    if (line && ctx.measureText(test).width > maxWidth) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+// ---------- page 2: full prompts + scores, for print/PDF only ----------
+function buildPromptsCanvas() {
+  const set = WHEEL_SETS[currentSet];
+  const vals = values[currentSet];
+  const name = document.getElementById("studentName").value || "Unnamed";
+  const date = document.getElementById("checkDate").value || "";
+  const staff = document.getElementById("staffName").value || "";
+
+  const W = 1000;
+  const marginX = 70;
+  const textX = marginX + 20;
+  const contentW = W - marginX * 2 - 20;
+  const headerH = 150;
+  const labelLineH = 24;
+  const stmtLineH = 21;
+  const itemGap = 22;
+  const stmtFont = "15px -apple-system, Arial, sans-serif";
+
+  // measure on a scratch context first so we know the total height up front
+  const measure = document.createElement("canvas").getContext("2d");
+  measure.font = stmtFont;
+  const wrapped = set.domains.map((d) => wrapText(measure, d.stmt, contentW));
+
+  const itemTops = [];
+  let y = headerH;
+  wrapped.forEach((lines) => {
+    itemTops.push(y);
+    y += labelLineH + lines.length * stmtLineH + itemGap;
+  });
+  const H = Math.ceil(y + 50);
+
+  const out = document.createElement("canvas");
+  out.width = W; out.height = H;
+  const ctx = out.getContext("2d");
+  ctx.fillStyle = "#FFFFFF";
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.fillStyle = "#1F3864";
+  ctx.font = "700 26px -apple-system, Arial, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "alphabetic";
+  ctx.fillText(set.title, W / 2, 48);
+
+  ctx.fillStyle = "#595959";
+  ctx.font = "italic 14px -apple-system, Arial, sans-serif";
+  ctx.fillText("Check-in prompts and scores", W / 2, 72);
+
+  ctx.fillStyle = "#1F1F1F";
+  ctx.font = "600 15px -apple-system, Arial, sans-serif";
+  const dateStr = formatDateNice(date);
+  ctx.fillText(`${name}  —  ${dateStr}  —  Completed with ${staff || "—"}`, W / 2, 98);
+
+  set.domains.forEach((d, i) => {
+    const top = itemTops[i];
+    ctx.fillStyle = d.color;
+    ctx.fillRect(marginX, top - 12, 12, 12);
+
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#1F1F1F";
+    ctx.font = "700 16px -apple-system, Arial, sans-serif";
+    ctx.fillText(d.label, textX, top);
+
+    ctx.textAlign = "right";
+    ctx.fillStyle = "#1F3864";
+    ctx.font = "700 15px -apple-system, Arial, sans-serif";
+    ctx.fillText(`${vals[i]} / 10`, W - marginX, top);
+
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#595959";
+    ctx.font = stmtFont;
+    wrapped[i].forEach((line, li) => {
+      ctx.fillText(line, textX, top + labelLineH + li * stmtLineH - 4);
+    });
+
+    const bottom = top + labelLineH + wrapped[i].length * stmtLineH + (itemGap - 10);
+    ctx.strokeStyle = "#E5E5E5";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(marginX, bottom);
+    ctx.lineTo(W - marginX, bottom);
+    ctx.stroke();
+  });
+
+  ctx.fillStyle = "#8A8A8A";
+  ctx.font = "12px -apple-system, Arial, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("Any issues contact Alistair Morrison at Wairarapa College.", W / 2, H - 24);
+
+  return { canvas: out };
+}
+
 // ---------- image (full record) download (active wheel) ----------
 document.getElementById("downloadImg").addEventListener("click", () => {
   const { canvas, set, name, date } = buildRecordCanvas();
@@ -528,12 +642,18 @@ document.getElementById("downloadImg").addEventListener("click", () => {
   }, "image/png");
 });
 
-// ---------- print / save as PDF (active wheel) ----------
+// ---------- print / save as PDF (active wheel) — page 1: wheel + summary, page 2: prompts ----------
 document.getElementById("printBtn").addEventListener("click", () => {
   const { canvas } = buildRecordCanvas();
-  const img = document.getElementById("printImage");
-  img.onload = () => window.print();
-  img.src = canvas.toDataURL("image/png");
+  const { canvas: canvas2 } = buildPromptsCanvas();
+  const img1 = document.getElementById("printImage");
+  const img2 = document.getElementById("printImagePage2");
+  let loaded = 0;
+  const maybePrint = () => { loaded++; if (loaded === 2) window.print(); };
+  img1.onload = maybePrint;
+  img2.onload = maybePrint;
+  img1.src = canvas.toDataURL("image/png");
+  img2.src = canvas2.toDataURL("image/png");
 });
 </script>
 
