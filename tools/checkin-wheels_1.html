@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Check-in Wheels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #F6F7F5;
+    --surface: #FFFFFF;
+    --surface-2: #EDF0EC;
+    --ink: #1E2422;
+    --ink-soft: #565F5B;
+    --ink-faint: #7C857F;
+    --navy: #1F3864;
+    --navy-strong: #142748;
+    --accent: #3F7D5C;
+    --accent-strong: #2E5E44;
+    --accent-soft: #E4EFE6;
+    --border: #DDE3DB;
+    --border-strong: #C4CDC1;
+    --on-strong: #FFFFFF;
+    --warn-bg: #FFF8E6;
+    --warn-border: #F2E0A8;
+    --warn-ink: #5A4A00;
+    --wheel-fill: rgba(31,56,100,0.20);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12161A; --surface: #1A2024; --surface-2: #1F262A;
+      --ink: #ECEFEC; --ink-soft: #A9B2AC; --ink-faint: #7C877F;
+      --navy: #8FAAD6; --navy-strong: #B4C7E5;
+      --accent: #78B896; --accent-strong: #98CDAE; --accent-soft: #1D2B24;
+      --border: #2A3236; --border-strong: #384046; --on-strong: #10151A;
+      --warn-bg: #332A12; --warn-border: #5C4A1E; --warn-ink: #E8C877;
+      --wheel-fill: rgba(143,170,214,0.20);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161A; --surface: #1A2024; --surface-2: #1F262A;
+    --ink: #ECEFEC; --ink-soft: #A9B2AC; --ink-faint: #7C877F;
+    --navy: #8FAAD6; --navy-strong: #B4C7E5;
+    --accent: #78B896; --accent-strong: #98CDAE; --accent-soft: #1D2B24;
+    --border: #2A3236; --border-strong: #384046; --on-strong: #10151A;
+    --warn-bg: #332A12; --warn-border: #5C4A1E; --warn-ink: #E8C877;
+    --wheel-fill: rgba(143,170,214,0.20);
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Public Sans", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    margin: 0;
+    padding: 24px;
+    color: var(--ink);
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  h1 { font-family: "Fraunces", Georgia, serif; font-weight: 600; color: var(--navy); font-size: 27px; margin: 0 0 4px; }
+  .subtitle { color: var(--ink-soft); font-style: italic; margin: 0 0 16px; }
+  .toggle-row { display: flex; gap: 8px; margin-bottom: 18px; }
+  .toggle-btn {
+    background: var(--surface); color: var(--navy); border: 1.5px solid var(--navy);
+    padding: 9px 20px; border-radius: 999px; font-size: 14px; font-weight: 700;
+    cursor: pointer;
+  }
+  .toggle-btn.active { background: var(--navy-strong); color: var(--on-strong); border-color: var(--navy-strong); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 16px; }
+  .meta-row label { display: flex; flex-direction: column; font-size: 13px; color: var(--ink-soft); font-weight: 600; flex: 1; min-width: 180px; }
+  .meta-row input, .meta-row textarea {
+    margin-top: 4px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;
+    font-size: 14px; font-family: inherit; background: var(--surface); color: var(--ink);
+  }
+  .instructions { font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+  .instructions strong { color: var(--navy); }
+  .layout { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+  .sliders { flex: 1 1 420px; min-width: 320px; }
+  .wheel-col { flex: 0 0 auto; text-align: center; }
+  .domain-row { padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .domain-row:last-child { border-bottom: none; }
+  .domain-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .chip { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+  .domain-label { font-weight: 700; font-size: 14.5px; color: var(--ink); }
+  .domain-stmt { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 6px 20px; }
+  .slider-row { display: flex; align-items: center; gap: 10px; margin-left: 20px; }
+  input[type=range] { flex: 1; accent-color: var(--accent-strong); height: 4px; }
+  .val { width: 28px; text-align: center; font-weight: 700; font-size: 14px; color: var(--navy); }
+  canvas { max-width: 100%; }
+  .buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; justify-content: center; }
+  button {
+    font-family: "Public Sans", sans-serif;
+    background: var(--navy-strong); color: var(--on-strong); border: none; padding: 10px 18px;
+    border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  button.secondary { background: var(--surface); color: var(--navy); border: 1.5px solid var(--navy); }
+  button:hover { opacity: 0.9; }
+  .note {
+    background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: 8px;
+    padding: 12px 16px; font-size: 13.5px; color: var(--warn-ink); margin-top: 16px;
+  }
+  .footer-note { font-size: 12px; color: var(--ink-faint); text-align: center; margin-top: 8px; }
+  .print-only { display: none; }
+  @media print {
+    body * { visibility: hidden; }
+    .print-only, .print-only * { visibility: visible; }
+    .print-only {
+      display: block; position: absolute; top: 0; left: 0;
+      width: 100%; height: auto;
+    }
+    .print-only img { display: block; width: 100%; height: auto; }
+    #printImagePage2 { page-break-before: always; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1 id="pageTitle">EF Wheel — Student Check-in</h1>
+  <p class="subtitle" id="pageSubtitle">A quick check-in about how things feel for you day to day. Internal record only — not a standardised or diagnostic result.</p>
+
+  <div class="toggle-row" id="toggleRow">
+    <button class="toggle-btn active" data-set="ef">EF Wheel</button>
+    <button class="toggle-btn" data-set="asd">ASD Wheel</button>
+  </div>
+
+  <div class="card">
+    <div class="meta-row">
+      <label>Student name
+        <input type="text" id="studentName" placeholder="e.g. Alex Smith">
+      </label>
+      <label>Date
+        <input type="date" id="checkDate">
+      </label>
+      <label>Completed with (staff)
+        <input type="text" id="staffName" placeholder="e.g. Mr Morrison">
+      </label>
+    </div>
+    <p class="instructions" style="margin-top:14px;">
+      For each one below, move the slider to show how true it feels for you: <strong>0 = not true for me at all</strong>, <strong>10 = really true for me</strong>. Go with your first instinct rather than overthinking it — there's no right answer.
+    </p>
+  </div>
+
+  <div class="card layout">
+    <div class="sliders" id="sliders"></div>
+    <div class="wheel-col">
+      <canvas id="wheelCanvas" width="560" height="560"></canvas>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>For the supporting adult:</strong> read each item aloud if that helps, and let the student lead — this is their view of themselves, not yours. Once submitted, download the record below and file it in line with your school's retention policy.
+  </div>
+
+  <div class="buttons">
+    <button id="printBtn">🖨 Print / Save as PDF</button>
+    <button id="downloadImg" class="secondary">Download completed wheel (image)</button>
+    <button id="downloadCsv" class="secondary">Download scores (CSV)</button>
+    <button id="resetBtn" class="secondary">Reset</button>
+  </div>
+  <p class="footer-note">Nothing on this page is sent anywhere or saved automatically — use the buttons above to keep a copy.</p>
+  <p class="footer-note">Any issues contact Alistair Morrison at Wairarapa College.</p>
+</div>
+
+<div class="print-only">
+  <img id="printImage" alt="">
+  <img id="printImagePage2" alt="">
+</div>
+
+
+<script>
+// ---------- wheel definitions ----------
+const WHEEL_SETS = {
+  ef: {
+    title: "EF Wheel — Student Check-in",
+    subtitle: "A quick check-in about how things feel for you day to day. Internal record only — not a standardised or diagnostic result.",
+    filePrefix: "EF_Wheel",
+    hub: ["EF", "WHEEL"],
+    domains: [
+      { key: "impulse",   label: "Thinking before acting",        stmt: "I do or say things before I've really thought them through.", color: "#E4132D" },
+      { key: "focus",     label: "Staying focused",                stmt: "I get distracted easily, even when I'm trying to concentrate.", color: "#F26B21" },
+      { key: "change",    label: "Coping with change",             stmt: "I find it hard when plans change or my routine is different.", color: "#F7A81B" },
+      { key: "emotion",   label: "Managing my feelings",           stmt: "My feelings can get big fast, and they're hard to calm back down.", color: "#E8C400" },
+      { key: "starting",  label: "Getting started",                stmt: "I put tasks off, or need reminders to actually start.", color: "#8DC63F" },
+      { key: "memory",    label: "Remembering instructions",       stmt: "I forget instructions partway through, especially multi-step ones.", color: "#2EB872" },
+      { key: "planning",  label: "Planning ahead",                 stmt: "I'm not sure where to start, or how long something will actually take.", color: "#12A9A0" },
+      { key: "checking",  label: "Checking my work",               stmt: "I hand things in without checking them over first.", color: "#1D8FD1" },
+      { key: "materials", label: "Keeping track of my things",     stmt: "I lose things, forget my laptop or PE gear, and my bag or desk get messy.", color: "#5B4FCF" },
+      { key: "selfaware", label: "Noticing how I come across",     stmt: "I don't always notice how my behaviour affects the people around me.", color: "#B23AA6" },
+    ],
+  },
+  asd: {
+    title: "ASD Wheel — Student Check-in",
+    subtitle: "A quick check-in about how things feel for you day to day. Internal record only — not a standardised or diagnostic result.",
+    filePrefix: "ASD_Wheel",
+    hub: ["ASD", "WHEEL"],
+    domains: [
+      { key: "eyecontact",   label: "Eye contact",                stmt: "Making eye contact feels uncomfortable or hard for me.", color: "#E4132D" },
+      { key: "social",       label: "Social situations",          stmt: "I find it hard to know what to do or say in social situations.", color: "#F26B21" },
+      { key: "sensitivity",  label: "Noise, light & texture",     stmt: "Certain textures, noises, lights or smells feel like too much for me.", color: "#F7A81B" },
+      { key: "routine",      label: "Need for routine",           stmt: "I feel unsettled when my routine changes or things don't go as planned.", color: "#E8C400" },
+      { key: "execfunction", label: "Executive function",         stmt: "I find it hard to plan, get organised, or start tasks.", color: "#8DC63F" },
+      { key: "communication",label: "Communication",              stmt: "It's hard for me to explain what I mean, or to understand what others mean.", color: "#2EB872" },
+      { key: "interests",    label: "Restricted interests",       stmt: "I have a few topics or activities I really love and think about a lot.", color: "#12A9A0" },
+      { key: "anxiety",      label: "Anxiety",                    stmt: "I feel worried or anxious a lot of the time.", color: "#1D8FD1" },
+      { key: "stimming",     label: "Stimming",                   stmt: "I move my body, my hands, or make sounds to help myself feel okay (e.g. rocking, tapping, flapping).", color: "#5B4FCF" },
+      { key: "meltdowns",    label: "Meltdowns",                  stmt: "Things can build up until I have a meltdown or shut down.", color: "#B23AA6" },
+    ],
+  },
+};
+
+let currentSet = "ef";
+const values = {
+  ef: WHEEL_SETS.ef.domains.map(() => 0),
+  asd: WHEEL_SETS.asd.domains.map(() => 0),
+};
+
+// ---------- build sliders for the active set ----------
+function buildSliders() {
+  const set = WHEEL_SETS[currentSet];
+  const vals = values[currentSet];
+  const slidersEl = document.getElementById("sliders");
+  slidersEl.innerHTML = "";
+  set.domains.forEach((d, i) => {
+    const row = document.createElement("div");
+    row.className = "domain-row";
+    row.innerHTML = `
+      <div class="domain-head">
+        <span class="chip" style="background:${d.color}"></span>
+        <span class="domain-label">${d.label}</span>
+      </div>
+      <p class="domain-stmt">${d.stmt}</p>
+      <div class="slider-row">
+        <input type="range" min="0" max="10" step="1" value="${vals[i]}" id="slider-${i}">
+        <span class="val" id="val-${i}">${vals[i]}</span>
+      </div>
+    `;
+    slidersEl.appendChild(row);
+  });
+  set.domains.forEach((d, i) => {
+    const slider = document.getElementById(`slider-${i}`);
+    const valEl = document.getElementById(`val-${i}`);
+    slider.addEventListener("input", () => {
+      vals[i] = parseInt(slider.value, 10);
+      valEl.textContent = vals[i];
+      redraw();
+    });
+  });
+}
+
+// ---------- helpers ----------
+function formatDateNice(iso) {
+  if (!iso) return "no date entered";
+  const d = new Date(iso + "T00:00:00");
+  if (isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString("en-NZ", { day: "numeric", month: "long", year: "numeric" });
+}
+
+// ---------- wheel drawing ----------
+function labelAlign(dx, dy) {
+  if (dy < -0.55) return { align: "center", baseline: "bottom", dxOff: 0, dyOff: -6 };
+  if (dy > 0.55) return { align: "center", baseline: "top", dxOff: 0, dyOff: 6 };
+  if (dx > 0) return { align: "left", baseline: "middle", dxOff: 8, dyOff: 0 };
+  return { align: "right", baseline: "middle", dxOff: -8, dyOff: 0 };
+}
+
+function drawWheel(ctx, domainsArr, vals, cx, cy, r, opts) {
+  opts = opts || {};
+  const n = domainsArr.length;
+  const fontSize = opts.fontSize || 12;
+  const hub = opts.hub || ["", ""];
+  const gridColor = opts.gridColor || "#D6D6D6";
+  const numColor = opts.numColor || "#9A9A9A";
+  const spokeColor = opts.spokeColor || "#B9B9B9";
+  const labelColor = opts.labelColor || "#333";
+  const fillColor = opts.fillColor || "rgba(31,56,100,0.22)";
+  const strokeColor = opts.strokeColor || "#1F3864";
+  const hubFillColor = opts.hubFillColor || "#B7B7B7";
+  const hubStrokeColor = opts.hubStrokeColor || "#8a8a8a";
+  const hubTextColor = opts.hubTextColor || "#2b2b2b";
+
+  // grid rings
+  ctx.strokeStyle = gridColor;
+  ctx.lineWidth = 1;
+  for (let ring = 2; ring <= 10; ring += 2) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, (ring / 10) * r, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  // scale numbers up the top axis, for reference on printed/exported copies
+  ctx.fillStyle = numColor;
+  ctx.font = `${Math.round(fontSize * 0.8)}px -apple-system, Arial, sans-serif`;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  for (let ring = 2; ring <= 10; ring += 2) {
+    ctx.fillText(String(ring), cx + 4, cy - (ring / 10) * r);
+  }
+
+  // spokes + labels + dots
+  const pts = [];
+  for (let i = 0; i < n; i++) {
+    const angle = -Math.PI / 2 + i * (2 * Math.PI / n);
+    const dx = Math.cos(angle), dy = Math.sin(angle);
+    const ex = cx + dx * r, ey = cy + dy * r;
+    ctx.strokeStyle = spokeColor;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(ex, ey);
+    ctx.stroke();
+
+    // axis dot showing current value colour
+    const vr = (vals[i] / 10) * r;
+    ctx.fillStyle = domainsArr[i].color;
+    ctx.beginPath();
+    ctx.arc(cx + dx * vr, cy + dy * vr, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    pts.push({ x: cx + dx * vr, y: cy + dy * vr });
+
+    // label
+    const lx = cx + dx * (r + 14), ly = cy + dy * (r + 14);
+    const a = labelAlign(dx, dy);
+    ctx.fillStyle = labelColor;
+    ctx.font = `700 ${fontSize}px -apple-system, Arial, sans-serif`;
+    ctx.textAlign = a.align;
+    ctx.textBaseline = a.baseline;
+    ctx.fillText(domainsArr[i].label, lx + a.dxOff, ly + a.dyOff);
+  }
+
+  // filled polygon of current values
+  ctx.beginPath();
+  pts.forEach((p, idx) => idx === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+  ctx.closePath();
+  ctx.fillStyle = fillColor;
+  ctx.fill();
+  ctx.strokeStyle = strokeColor;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // centre hub
+  ctx.fillStyle = hubFillColor;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 22, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = hubStrokeColor;
+  ctx.stroke();
+  ctx.fillStyle = hubTextColor;
+  ctx.font = "700 11px -apple-system, Arial, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(hub[0] || "", cx, cy - 6);
+  ctx.fillText(hub[1] || "", cx, cy + 6);
+}
+
+// reads a resolved CSS custom property so the live wheel follows the page's theme
+function themeColor(varName, fallback) {
+  const v = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+  return v || fallback;
+}
+
+function redraw() {
+  const set = WHEEL_SETS[currentSet];
+  const canvas = document.getElementById("wheelCanvas");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawWheel(ctx, set.domains, values[currentSet], 280, 280, 230, {
+    hub: set.hub,
+    gridColor: themeColor("--border", "#D6D6D6"),
+    numColor: themeColor("--ink-faint", "#9A9A9A"),
+    spokeColor: themeColor("--border-strong", "#B9B9B9"),
+    labelColor: themeColor("--ink", "#333"),
+    fillColor: themeColor("--wheel-fill", "rgba(31,56,100,0.22)"),
+    strokeColor: themeColor("--navy", "#1F3864"),
+    hubFillColor: themeColor("--surface-2", "#B7B7B7"),
+    hubStrokeColor: themeColor("--border-strong", "#8a8a8a"),
+    hubTextColor: themeColor("--ink", "#2b2b2b"),
+  });
+}
+
+// keep the live wheel in step if the viewer's OS theme flips while the page is open
+if (window.matchMedia) {
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => redraw());
+}
+
+// ---------- toggle between wheels ----------
+function switchSet(key) {
+  currentSet = key;
+  const set = WHEEL_SETS[key];
+  document.getElementById("pageTitle").textContent = set.title;
+  document.getElementById("pageSubtitle").textContent = set.subtitle;
+  document.querySelectorAll(".toggle-btn").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.set === key);
+  });
+  buildSliders();
+  redraw();
+}
+
+document.getElementById("toggleRow").addEventListener("click", (e) => {
+  const btn = e.target.closest(".toggle-btn");
+  if (!btn) return;
+  switchSet(btn.dataset.set);
+});
+
+buildSliders();
+redraw();
+
+document.getElementById("checkDate").valueAsDate = new Date();
+
+// ---------- reset (clears the active wheel only) ----------
+document.getElementById("resetBtn").addEventListener("click", () => {
+  const vals = values[currentSet];
+  vals.forEach((_, i) => {
+    vals[i] = 0;
+    document.getElementById(`slider-${i}`).value = 0;
+    document.getElementById(`val-${i}`).textContent = 0;
+  });
+  redraw();
+});
+
+// ---------- file saving (plain browser download) ----------
+function guessMime(filename) {
+  if (filename.endsWith(".csv")) return "text/csv";
+  if (filename.endsWith(".png")) return "image/png";
+  return "application/octet-stream";
+}
+function saveFile(filename, data) {
+  const blob = (data instanceof Blob) ? data : new Blob([data], { type: guessMime(filename) });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+// ---------- CSV download (active wheel) ----------
+document.getElementById("downloadCsv").addEventListener("click", () => {
+  const set = WHEEL_SETS[currentSet];
+  const vals = values[currentSet];
+  const name = document.getElementById("studentName").value || "Unnamed";
+  const date = document.getElementById("checkDate").value || "";
+  const staff = document.getElementById("staffName").value || "";
+  let csv = `Wheel,${set.title}\nStudent,${name}\nDate,${date}\nCompleted with,${staff}\n\nDomain,Score (0-10)\n`;
+  set.domains.forEach((d, i) => { csv += `"${d.label}",${vals[i]}\n`; });
+  saveFile(`${set.filePrefix}_${name.replace(/\s+/g, "_")}_${date}.csv`, csv);
+});
+
+// ---------- shared full-page record canvas (used by the PNG download and the print/PDF view) ----------
+// Deliberately drawn in fixed light colours regardless of on-screen theme — this is a
+// printable/exportable record, same rationale as the spelling test tool's print styles.
+function buildRecordCanvas() {
+  const set = WHEEL_SETS[currentSet];
+  const vals = values[currentSet];
+  const name = document.getElementById("studentName").value || "Unnamed";
+  const date = document.getElementById("checkDate").value || "";
+  const staff = document.getElementById("staffName").value || "";
+
+  const W = 1000, H = 1400;
+  const out = document.createElement("canvas");
+  out.width = W; out.height = H;
+  const ctx = out.getContext("2d");
+  ctx.fillStyle = "#FFFFFF";
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.fillStyle = "#1F3864";
+  ctx.font = "700 30px -apple-system, Arial, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "alphabetic";
+  ctx.fillText(set.title, W / 2, 55);
+
+  ctx.fillStyle = "#595959";
+  ctx.font = "italic 15px -apple-system, Arial, sans-serif";
+  ctx.fillText("Internal record only — not a standardised or diagnostic result.", W / 2, 82);
+
+  // single-line header: Name — Date — Completed with Staff
+  ctx.textAlign = "center";
+  ctx.textBaseline = "alphabetic";
+  ctx.fillStyle = "#1F1F1F";
+  ctx.font = "600 17px -apple-system, Arial, sans-serif";
+  const dateStr = formatDateNice(date);
+  ctx.fillText(`${name}  —  ${dateStr}  —  Completed with ${staff || "—"}`, W / 2, 118);
+
+  drawWheel(ctx, set.domains, vals, W / 2, 560, 300, { fontSize: 15, hub: set.hub });
+
+  // score table, two columns — reset alignment/baseline explicitly, drawWheel leaves
+  // ctx set to "center"/"middle" from drawing the centre hub label
+  const startY = 930;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
+  ctx.font = "700 16px -apple-system, Arial, sans-serif";
+  ctx.fillStyle = "#1F3864";
+  ctx.fillText("Scores", 60, startY);
+  ctx.font = "14px -apple-system, Arial, sans-serif";
+  ctx.fillStyle = "#1F1F1F";
+  const colW = (W - 120) / 2;
+  set.domains.forEach((d, i) => {
+    const col = i < 5 ? 0 : 1;
+    const row = i % 5;
+    const x = 60 + col * colW;
+    const y = startY + 34 + row * 30;
+    ctx.fillStyle = d.color;
+    ctx.fillRect(x, y - 12, 10, 10);
+    ctx.fillStyle = "#1F1F1F";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "alphabetic";
+    ctx.fillText(`${d.label}: ${vals[i]}`, x + 18, y - 2);
+  });
+
+  ctx.fillStyle = "#8A8A8A";
+  ctx.font = "12px -apple-system, Arial, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("Store in line with your school's document retention policy.", W / 2, H - 46);
+  ctx.fillText("Any issues contact Alistair Morrison at Wairarapa College.", W / 2, H - 28);
+
+  return { canvas: out, set, name, date };
+}
+
+// ---------- word-wrap helper for canvas text ----------
+function wrapText(ctx, text, maxWidth) {
+  const words = text.split(" ");
+  const lines = [];
+  let line = "";
+  for (const word of words) {
+    const test = line ? `${line} ${word}` : word;
+    if (line && ctx.measureText(test).width > maxWidth) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+// ---------- page 2: full prompts + scores, for print/PDF only ----------
+function buildPromptsCanvas() {
+  const set = WHEEL_SETS[currentSet];
+  const vals = values[currentSet];
+  const name = document.getElementById("studentName").value || "Unnamed";
+  const date = document.getElementById("checkDate").value || "";
+  const staff = document.getElementById("staffName").value || "";
+
+  const W = 1000;
+  const marginX = 70;
+  const textX = marginX + 20;
+  const contentW = W - marginX * 2 - 20;
+  const headerH = 150;
+  const labelLineH = 24;
+  const stmtLineH = 21;
+  const itemGap = 22;
+  const stmtFont = "15px -apple-system, Arial, sans-serif";
+
+  // measure on a scratch context first so we know the total height up front
+  const measure = document.createElement("canvas").getContext("2d");
+  measure.font = stmtFont;
+  const wrapped = set.domains.map((d) => wrapText(measure, d.stmt, contentW));
+
+  const itemTops = [];
+  let y = headerH;
+  wrapped.forEach((lines) => {
+    itemTops.push(y);
+    y += labelLineH + lines.length * stmtLineH + itemGap;
+  });
+  const H = Math.ceil(y + 50);
+
+  const out = document.createElement("canvas");
+  out.width = W; out.height = H;
+  const ctx = out.getContext("2d");
+  ctx.fillStyle = "#FFFFFF";
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.fillStyle = "#1F3864";
+  ctx.font = "700 26px -apple-system, Arial, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "alphabetic";
+  ctx.fillText(set.title, W / 2, 48);
+
+  ctx.fillStyle = "#595959";
+  ctx.font = "italic 14px -apple-system, Arial, sans-serif";
+  ctx.fillText("Check-in prompts and scores", W / 2, 72);
+
+  ctx.fillStyle = "#1F1F1F";
+  ctx.font = "600 15px -apple-system, Arial, sans-serif";
+  const dateStr = formatDateNice(date);
+  ctx.fillText(`${name}  —  ${dateStr}  —  Completed with ${staff || "—"}`, W / 2, 98);
+
+  set.domains.forEach((d, i) => {
+    const top = itemTops[i];
+    ctx.fillStyle = d.color;
+    ctx.fillRect(marginX, top - 12, 12, 12);
+
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#1F1F1F";
+    ctx.font = "700 16px -apple-system, Arial, sans-serif";
+    ctx.fillText(d.label, textX, top);
+
+    ctx.textAlign = "right";
+    ctx.fillStyle = "#1F3864";
+    ctx.font = "700 15px -apple-system, Arial, sans-serif";
+    ctx.fillText(`${vals[i]} / 10`, W - marginX, top);
+
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#595959";
+    ctx.font = stmtFont;
+    wrapped[i].forEach((line, li) => {
+      ctx.fillText(line, textX, top + labelLineH + li * stmtLineH - 4);
+    });
+
+    const bottom = top + labelLineH + wrapped[i].length * stmtLineH + (itemGap - 10);
+    ctx.strokeStyle = "#E5E5E5";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(marginX, bottom);
+    ctx.lineTo(W - marginX, bottom);
+    ctx.stroke();
+  });
+
+  ctx.fillStyle = "#8A8A8A";
+  ctx.font = "12px -apple-system, Arial, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("Any issues contact Alistair Morrison at Wairarapa College.", W / 2, H - 24);
+
+  return { canvas: out };
+}
+
+// ---------- image (full record) download (active wheel) ----------
+document.getElementById("downloadImg").addEventListener("click", () => {
+  const { canvas, set, name, date } = buildRecordCanvas();
+  canvas.toBlob((blob) => {
+    if (!blob) return;
+    saveFile(`${set.filePrefix}_${name.replace(/\s+/g, "_")}_${date}.png`, blob);
+  }, "image/png");
+});
+
+// ---------- print / save as PDF (active wheel) — page 1: wheel + summary, page 2: prompts ----------
+document.getElementById("printBtn").addEventListener("click", () => {
+  const { canvas } = buildRecordCanvas();
+  const { canvas: canvas2 } = buildPromptsCanvas();
+  const img1 = document.getElementById("printImage");
+  const img2 = document.getElementById("printImagePage2");
+  let loaded = 0;
+  const maybePrint = () => { loaded++; if (loaded === 2) window.print(); };
+  img1.onload = maybePrint;
+  img2.onload = maybePrint;
+  img1.src = canvas.toDataURL("image/png");
+  img2.src = canvas2.toDataURL("image/png");
+});
+</script>
+
+</body>
+</html>
