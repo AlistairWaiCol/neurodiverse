@@ -128,11 +128,7 @@ nav.main a.link[aria-current="page"] { background: var(--navy); color: var(--cre
 .hero h1 .hl { color: var(--purple-deep); }
 .hero .lede { margin-top: 20px; }
 .hero-art { position: relative; display: grid; place-items: center; }
-.hero-art img { width: 78%; height: auto; position: relative; z-index: 2; }
-.blob { position: absolute; border-radius: 50%; border: var(--border); z-index: 1; }
-.blob.b1 { width: 62%; aspect-ratio: 1; background: var(--teal-soft); top: 2%; left: 2%; }
-.blob.b2 { width: 34%; aspect-ratio: 1; background: var(--orange); right: 6%; top: 8%; }
-.blob.b3 { width: 26%; aspect-ratio: 1; background: var(--lav); left: 8%; bottom: 6%; }
+.hero-art img { width: 84%; max-width: 420px; height: auto; }
 
 /* ---------- Cards ---------- */
 .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 40px; }

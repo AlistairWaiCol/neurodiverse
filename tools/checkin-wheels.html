@@ -4,49 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Check-in Wheels</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@400;500;600&display=swap">
 <style>
-  :root {
-    --bg: #F6F7F5;
-    --surface: #FFFFFF;
-    --surface-2: #EDF0EC;
-    --ink: #1E2422;
-    --ink-soft: #565F5B;
-    --ink-faint: #7C857F;
-    --navy: #1F3864;
-    --navy-strong: #142748;
-    --accent: #3F7D5C;
-    --accent-strong: #2E5E44;
-    --accent-soft: #E4EFE6;
-    --border: #DDE3DB;
-    --border-strong: #C4CDC1;
-    --on-strong: #FFFFFF;
-    --warn-bg: #FFF8E6;
-    --warn-border: #F2E0A8;
-    --warn-ink: #5A4A00;
-    --wheel-fill: rgba(31,56,100,0.20);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #12161A; --surface: #1A2024; --surface-2: #1F262A;
-      --ink: #ECEFEC; --ink-soft: #A9B2AC; --ink-faint: #7C877F;
-      --navy: #8FAAD6; --navy-strong: #B4C7E5;
-      --accent: #78B896; --accent-strong: #98CDAE; --accent-soft: #1D2B24;
-      --border: #2A3236; --border-strong: #384046; --on-strong: #10151A;
-      --warn-bg: #332A12; --warn-border: #5C4A1E; --warn-ink: #E8C877;
-      --wheel-fill: rgba(143,170,214,0.20);
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #12161A; --surface: #1A2024; --surface-2: #1F262A;
-    --ink: #ECEFEC; --ink-soft: #A9B2AC; --ink-faint: #7C877F;
-    --navy: #8FAAD6; --navy-strong: #B4C7E5;
-    --accent: #78B896; --accent-strong: #98CDAE; --accent-soft: #1D2B24;
-    --border: #2A3236; --border-strong: #384046; --on-strong: #10151A;
-    --warn-bg: #332A12; --warn-border: #5C4A1E; --warn-ink: #E8C877;
-    --wheel-fill: rgba(143,170,214,0.20);
-  }
   * { box-sizing: border-box; }
   body {
     font-family: "Public Sans", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -119,10 +78,23 @@
     #printImagePage2 { page-break-before: always; }
   }
 </style>
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="stylesheet" href="/assets/tools.css">
 </head>
 <body>
-
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site">
+  <div class="nav-row">
+    <a class="brand" href="/" aria-label="Neurodiverse Aotearoa home"><img src="/assets/logo.svg" alt="Neurodiverse Aotearoa" width="165" height="52"></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="main" id="site-nav" aria-label="Main">
+      <ul><li><a class="link" href="/">Home</a></li><li><a class="link" href="/about/">About</a></li><li><a class="link" href="/workshops/">Workshops</a></li><li><a class="link" href="/tools/" aria-current="page">Tools</a></li><li><a class="btn btn-primary btn-sm" href="/contact/">Get in touch</a></li></ul>
+    </nav>
+  </div>
+</header>
+<main id="main">
 <div class="wrap">
+  <a class="back-link no-print" href="/tools/">&larr; All tools</a>
   <h1 id="pageTitle">EF Wheel — Student Check-in</h1>
   <p class="subtitle" id="pageSubtitle">A quick check-in about how things feel for you day to day. Internal record only — not a standardised or diagnostic result.</p>
 
@@ -168,6 +140,44 @@
   <p class="footer-note">Nothing on this page is sent anywhere or saved automatically — use the buttons above to keep a copy.</p>
   <p class="footer-note">Any issues contact Alistair Morrison at Wairarapa College.</p>
 </div>
+</main>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img src="/assets/logo-reversed.svg" alt="Neurodiverse Aotearoa" width="200" height="65">
+        <p>Assessments, support plans and workshops for neurodivergent learners, their families and their teachers.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="/about/">About Alistair</a></li>
+          <li><a href="/workshops/">Workshops</a></li>
+          <li><a href="/tools/">Free classroom tools</a></li>
+          <li><a href="/contact/">Get in touch</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Where</h4>
+        <p style="margin-top:0">Masterton and the wider Wairarapa in person, or online anywhere in Aotearoa.</p>
+        <p>Workshops are currently held at Wairarapa College, Masterton.</p>
+      </div>
+    </div>
+    <p class="small">&copy; 2026 Neurodiverse Aotearoa. Assessments and support plans are educational, and are not a medical diagnosis.</p>
+  </div>
+</footer>
+<script>
+  (function () {
+    var b = document.querySelector('.nav-toggle'), n = document.getElementById('site-nav');
+    if (!b || !n) return;
+    b.addEventListener('click', function () {
+      var open = n.classList.toggle('open');
+      b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  })();
+</script>
+
 
 <div class="print-only">
   <img id="printImage" alt="">
