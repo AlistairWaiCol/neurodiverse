@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get in touch — Neurodiverse Aotearoa</title>
+<meta name="description" content="Ask a question or request a quote for assessments, support plans or workshops. Neurodiverse Aotearoa, Masterton and the Wairarapa.">
+<link rel="canonical" href="https://neurodiverse.nz/contact/">
+<meta name="theme-color" content="#FDF9EA">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="apple-touch-icon" href="/assets/icon-512.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Neurodiverse Aotearoa">
+<meta property="og:title" content="Get in touch — Neurodiverse Aotearoa">
+<meta property="og:description" content="Ask a question or request a quote for assessments, support plans or workshops. Neurodiverse Aotearoa, Masterton and the Wairarapa.">
+<meta property="og:url" content="https://neurodiverse.nz/contact/">
+<meta property="og:image" content="https://neurodiverse.nz/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/assets/style.css">
+
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site">
+  <div class="nav-row">
+    <a class="brand" href="/" aria-label="Neurodiverse Aotearoa home"><img src="/assets/logo.svg" alt="Neurodiverse Aotearoa" width="165" height="52"></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="main" id="site-nav" aria-label="Main">
+      <ul><li><a class="link" href="/">Home</a></li><li><a class="link" href="/about/">About</a></li><li><a class="link" href="/workshops/">Workshops</a></li><li><a class="link" href="/tools/">Tools</a></li><li><a class="btn btn-primary btn-sm" href="/contact/">Get in touch</a></li></ul>
+    </nav>
+  </div>
+</header>
+<main id="main">
+
+<div class="page-head">
+  <div class="wrap narrow">
+    <span class="eyebrow">Get in touch</span>
+    <h1>Have a question? Let's talk.</h1>
+    <p class="lede">Send a message and I'll get back to you. It's fine if you're not sure what you need yet. That's what the first conversation is for.</p>
+  </div>
+</div>
+
+<section style="padding-top:24px">
+  <div class="wrap narrow">
+    <form class="contact" id="contact-form" action="https://formspree.io/f/REPLACE_WITH_FORM_ID" method="POST">
+      <div>
+        <label for="name">Your name</label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div>
+        <label for="email">Your email <span class="hint">So I know where to reply.</span></label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div>
+        <label for="role">I'm a&hellip;</label>
+        <select id="role" name="role">
+          <option>Parent or whānau member</option>
+          <option>Teacher or school</option>
+          <option>Adult looking for support for myself</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div>
+        <label for="topic">I'd like help with&hellip;</label>
+        <select id="topic" name="topic">
+          <option value="not-sure">Not sure yet</option>
+          <option value="assessment">An assessment</option>
+          <option value="support-plan">A support plan for school and home</option>
+          <option value="workshops">Workshops</option>
+          <option value="quote">A quote</option>
+        </select>
+      </div>
+      <div>
+        <label for="message">Your message <span class="hint">A few lines is plenty.</span></label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+      <p class="privacy-note">To protect your family's privacy, please leave out your child's full name and any sensitive details for now. We can cover those when we talk.</p>
+      <div class="hp" aria-hidden="true"><label>Leave this blank <input name="_gotcha" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
+      <div><button class="btn btn-primary" type="submit">Send message</button></div>
+    </form>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var p = new URLSearchParams(location.search).get('topic');
+    var sel = document.getElementById('topic');
+    if (p && sel && sel.querySelector('option[value="' + p + '"]')) sel.value = p;
+
+    var form = document.getElementById('contact-form'), status = document.getElementById('form-status');
+    form.addEventListener('submit', function (e) {
+      if (form.action.indexOf('REPLACE_WITH_FORM_ID') !== -1) {
+        e.preventDefault();
+        status.className = 'form-status err';
+        status.textContent = 'This form is not connected yet. Please check back soon.';
+        return;
+      }
+      e.preventDefault();
+      status.className = 'form-status'; status.textContent = '';
+      fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+        .then(function (r) {
+          if (r.ok) {
+            form.reset();
+            status.className = 'form-status ok';
+            status.textContent = 'Thank you! Your message is on its way, and I will get back to you soon.';
+          } else { throw new Error('bad response'); }
+        })
+        .catch(function () {
+          status.className = 'form-status err';
+          status.textContent = 'Sorry, that did not send. Please try again in a moment.';
+        });
+    });
+  })();
+</script>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img src="/assets/logo-reversed.svg" alt="Neurodiverse Aotearoa" width="200" height="65">
+        <p>Assessments, support plans and workshops for neurodivergent learners, their families and their teachers.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="/about/">About Alistair</a></li>
+          <li><a href="/workshops/">Workshops</a></li>
+          <li><a href="/tools/">Free classroom tools</a></li>
+          <li><a href="/contact/">Get in touch</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Where</h4>
+        <p style="margin-top:0">Masterton and the wider Wairarapa in person, or online anywhere in Aotearoa.</p>
+        <p>Workshops are currently held at Wairarapa College, Masterton.</p>
+      </div>
+    </div>
+    <p class="small">&copy; 2026 Neurodiverse Aotearoa. Assessments and support plans are educational, and are not a medical diagnosis.</p>
+  </div>
+</footer>
+<script>
+  (function () {
+    var b = document.querySelector('.nav-toggle'), n = document.getElementById('site-nav');
+    if (!b || !n) return;
+    b.addEventListener('click', function () {
+      var open = n.classList.toggle('open');
+      b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  })();
+</script>
+</body>
+</html>
